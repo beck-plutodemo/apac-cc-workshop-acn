@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Rewire — Team 14 Cloud Migration</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      background: #0f0f0f;
+      color: #e0e0e0;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Slide engine */
+    .deck { width: 100%; height: 100vh; position: relative; }
+
+    .slide {
+      display: none;
+      position: absolute;
+      inset: 0;
+      padding: 64px 80px;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .slide.active { display: flex; }
+
+    /* Typography */
+    h1 { font-size: 3rem; font-weight: 700; line-height: 1.1; }
+    h2 { font-size: 2rem; font-weight: 600; margin-bottom: 24px; }
+    h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 8px; }
+    p  { font-size: 1.1rem; line-height: 1.6; color: #bbb; }
+    ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    li { font-size: 1.05rem; padding-left: 20px; position: relative; color: #ccc; }
+    li::before { content: "→"; position: absolute; left: 0; color: #888; }
+
+    /* Accent colors */
+    .accent   { color: #60a5fa; }
+    .warn     { color: #f59e0b; }
+    .ok       { color: #34d399; }
+    .muted    { color: #666; }
+
+    /* Tag pill */
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .tag-kill  { background: #7f1d1d; color: #fca5a5; }
+    .tag-build { background: #1e3a5f; color: #93c5fd; }
+    .tag-ship  { background: #14532d; color: #86efac; }
+
+    /* Code block */
+    pre {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 20px 24px;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      color: #e0e0e0;
+      line-height: 1.7;
+    }
+    code { font-family: "SF Mono", "Fira Code", monospace; }
+
+    /* Card grid */
+    .grid { display: grid; gap: 20px; }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    /* Flow diagram (text-based) */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 0.95rem;
+    }
+    .flow-box {
+      background: #1a1a2e;
+      border: 1px solid #3b5bdb;
+      border-radius: 6px;
+      padding: 10px 18px;
+      white-space: nowrap;
+    }
+    .flow-arrow { color: #555; font-size: 1.4rem; }
+
+    /* Before/After split */
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .before { border-left: 3px solid #ef4444; padding-left: 20px; }
+    .after  { border-left: 3px solid #22c55e; padding-left: 20px; }
+    .label  { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+    .label.red  { color: #ef4444; }
+    .label.green { color: #22c55e; }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      bottom: 24px;
+      right: 32px;
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    nav button {
+      background: #1f1f1f;
+      border: 1px solid #333;
+      color: #aaa;
+      padding: 8px 18px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.15s;
+    }
+
+    nav button:hover { background: #2a2a2a; color: #fff; }
+
+    .slide-counter {
+      position: fixed;
+      bottom: 30px;
+      left: 32px;
+      font-size: 0.8rem;
+      color: #444;
+    }
+
+    /* Divider line */
+    hr { border: none; border-top: 1px solid #222; margin: 20px 0; }
+
+    /* Spacer */
+    .gap { margin-top: 16px; }
+    .gap-lg { margin-top: 32px; }
+  </style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- Slide 1: Title -->
+  <div class="slide active">
+    <p class="muted" style="margin-bottom:12px; font-size:0.85rem; letter-spacing:0.1em; text-transform:uppercase;">Team 14 · Cloud Migration · Hackathon 2026</p>
+    <h1>The Rewire <span class="accent">.</span></h1>
+    <p style="margin-top:20px; font-size:1.3rem; color:#888;">Kill the 2am cron. Go event-driven.</p>
+    <hr style="margin-top:40px; width:80px; border-color:#333;" />
+    <div class="gap"></div>
+    <div class="flow">
+      <span class="tag tag-kill">Kill cron</span>
+      <span class="tag tag-build">Event-driven</span>
+      <span class="tag tag-build">Containerized</span>
+      <span class="tag tag-ship">Backward compatible</span>
+    </div>
+    <div class="gap-lg"></div>
+    <p style="font-size:0.9rem; color:#555;">Christian · Justin · Rakesh · Siriwat · Varunyou · Kanyapak</p>
+  </div>
+
+  <!-- Slide 2: The Problem -->
+  <div class="slide">
+    <h2>The Problem</h2>
+    <div class="split">
+      <div class="before">
+        <p class="label red">Before — The 2am Cron</p>
+        <ul>
+          <li>Batch job fires at <span class="warn">02:00 every night</span> regardless of data arrival</li>
+          <li>Processes entire reconciliation file even if nothing changed</li>
+          <li>Failures are silent until morning stand-up</li>
+          <li>Tight coupling: downstream consumers poll for output at fixed times</li>
+          <li>Scaling means running bigger VMs, not smarter pipelines</li>
+        </ul>
+      </div>
+      <div class="after">
+        <p class="label green">After — Event-Driven</p>
+        <ul>
+          <li>Job triggers <span class="ok">on file arrival</span> in object storage</li>
+          <li>Processes only what arrived — nothing wasted</li>
+          <li>Failures surface immediately via event queue</li>
+          <li>Downstream consumers use compatibility shim — zero breakage</li>
+          <li>Horizontal scale via container replicas</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3: Architecture Overview -->
+  <div class="slide">
+    <h2>Architecture</h2>
+    <p style="margin-bottom:28px;">File lands in object storage → event fires → container processes → output lands downstream.</p>
+    <div class="flow" style="gap:8px;">
+      <div class="flow-box">Upstream System<br/><span class="muted" style="font-size:0.8rem;">drops recon file</span></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box" style="border-color:#f59e0b;">MinIO / S3 / GCS<br/><span class="muted" style="font-size:0.8rem;">object storage</span></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box" style="border-color:#60a5fa;">Event Notification<br/><span class="muted" style="font-size:0.8rem;">bucket trigger</span></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box" style="border-color:#34d399;">Recon Worker<br/><span class="muted" style="font-size:0.8rem;">container</span></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">Output Bucket<br/><span class="muted" style="font-size:0.8rem;">+ compat shim</span></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">Downstream<br/><span class="muted" style="font-size:0.8rem;">consumers</span></div>
+    </div>
+    <div class="gap-lg"></div>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3 class="accent">Local Dev</h3>
+        <p>MinIO + Docker Compose. Full stack runs offline with one command.</p>
+      </div>
+      <div class="card">
+        <h3 class="accent">Staging / Prod</h3>
+        <p>Swap MinIO for S3 or GCS via env vars — same container image, no code changes.</p>
+      </div>
+      <div class="card">
+        <h3 class="accent">Trigger</h3>
+        <p>MinIO bucket notifications via webhook. S3 EventBridge / GCS Pub-Sub in cloud.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4: The Container -->
+  <div class="slide">
+    <h2>Containerizing the Worker</h2>
+    <pre><code># Dockerfile — recon-worker
+FROM python:3.12-slim
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY src/ ./src/
+
+# Entrypoint: listen for webhook events or run once (CI mode)
+CMD ["python", "-m", "src.worker"]</code></pre>
+    <div class="gap"></div>
+    <pre><code># docker-compose.yml (local dev)
+services:
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports: ["9000:9000", "9001:9001"]
+
+  recon-worker:
+    build: .
+    environment:
+      STORAGE_BACKEND: minio
+      STORAGE_ENDPOINT: http://minio:9000
+      INPUT_BUCKET: recon-incoming
+      OUTPUT_BUCKET: recon-processed
+    depends_on: [minio]</code></pre>
+  </div>
+
+  <!-- Slide 5: Event Trigger Logic -->
+  <div class="slide">
+    <h2>Event Trigger Logic</h2>
+    <p style="margin-bottom:20px;">Worker exposes a lightweight webhook endpoint. MinIO (and S3/GCS) POST to it on every object creation event.</p>
+    <pre><code>from fastapi import FastAPI, Request
+from src.reconciler import run_reconciliation
+from src.storage import get_storage_client
+
+app = FastAPI()
+
+@app.post("/trigger")
+async def handle_event(req: Request):
+    body = await req.json()
+
+    # Normalise event shape across MinIO / S3 / GCS
+    file_key = parse_file_key(body)
+
+    if not file_key.endswith(".csv"):
+        return {"status": "skipped", "reason": "not a recon file"}
+
+    storage = get_storage_client()          # respects STORAGE_BACKEND env var
+    data = storage.download(file_key)
+
+    result = run_reconciliation(data)
+
+    storage.upload(output_key(file_key), result)
+    notify_downstream(file_key)             # compatibility shim call
+
+    return {"status": "ok", "processed": file_key}</code></pre>
+  </div>
+
+  <!-- Slide 6: Compatibility Shim -->
+  <div class="slide">
+    <h2>Compatibility Shim</h2>
+    <p style="margin-bottom:20px;">Downstream consumers expect output at <code>recon-processed/YYYYMMDD_recon_out.csv</code> by <span class="warn">06:00</span>. We keep that contract.</p>
+    <pre><code># src/compat_shim.py
+"""
+Ensures downstream consumers that poll for output files see
+the same path/filename convention as before the migration.
+"""
+import os
+from datetime import datetime
+
+def notify_downstream(source_key: str):
+    date_str = datetime.utcnow().strftime("%Y%m%d")
+    legacy_path = f"recon-processed/{date_str}_recon_out.csv"
+
+    # Write a pointer / symlink object so legacy pollers find their file
+    storage = get_storage_client()
+    storage.copy(output_key(source_key), legacy_path)
+
+    # Optional: POST to legacy webhook if consumers subscribed that way
+    legacy_webhook = os.getenv("LEGACY_WEBHOOK_URL")
+    if legacy_webhook:
+        requests.post(legacy_webhook, json={"file": legacy_path, "status": "ready"})</code></pre>
+    <div class="gap"></div>
+    <p><span class="ok">Zero changes required</span> by downstream teams. They keep polling the same path. We stop caring about what time it is.</p>
+  </div>
+
+  <!-- Slide 7: Storage Abstraction -->
+  <div class="slide">
+    <h2>Storage Abstraction Layer</h2>
+    <p style="margin-bottom:20px;">Single interface, three backends. Swap via <code>STORAGE_BACKEND</code> env var.</p>
+    <pre><code># src/storage.py
+def get_storage_client():
+    backend = os.getenv("STORAGE_BACKEND", "minio")
+    match backend:
+        case "minio":
+            return MinIOClient(
+                endpoint=os.getenv("STORAGE_ENDPOINT"),
+                access_key=os.getenv("MINIO_ROOT_USER"),
+                secret_key=os.getenv("MINIO_ROOT_PASSWORD"),
+            )
+        case "s3":
+            return S3Client(bucket_prefix=os.getenv("S3_BUCKET_PREFIX"))
+        case "gcs":
+            return GCSClient(project=os.getenv("GCP_PROJECT"))
+        case _:
+            raise ValueError(f"Unknown storage backend: {backend}")</code></pre>
+    <div class="gap"></div>
+    <div class="grid grid-3">
+      <div class="card"><h3>MinIO</h3><p>Local dev, CI, air-gapped environments.</p></div>
+      <div class="card"><h3>S3</h3><p>AWS prod. Uses boto3 + EventBridge for triggers.</p></div>
+      <div class="card"><h3>GCS</h3><p>GCP prod. Uses google-cloud-storage + Pub/Sub.</p></div>
+    </div>
+  </div>
+
+  <!-- Slide 8: What We Killed -->
+  <div class="slide">
+    <h2>What We Killed</h2>
+    <div class="grid grid-2" style="margin-top:8px;">
+      <div class="card" style="border-color:#7f1d1d;">
+        <h3 class="warn">The Cron Entry</h3>
+        <pre style="margin-top:12px; font-size:0.85rem;"><code># REMOVED from crontab
+# 0 2 * * * /opt/recon/run_batch.sh</code></pre>
+        <p style="margin-top:12px;">No more guessing whether data arrived. No more 2am alerts.</p>
+      </div>
+      <div class="card" style="border-color:#7f1d1d;">
+        <h3 class="warn">Hardcoded Paths</h3>
+        <pre style="margin-top:12px; font-size:0.85rem;"><code># REMOVED
+INPUT_PATH = "/mnt/nfs/recon/incoming/"
+OUTPUT_PATH = "/mnt/nfs/recon/done/"</code></pre>
+        <p style="margin-top:12px;">Replaced with storage abstraction. No more NFS mounts in containers.</p>
+      </div>
+      <div class="card" style="border-color:#7f1d1d;">
+        <h3 class="warn">VM-Specific Config</h3>
+        <p style="margin-top:8px;">Job no longer assumes a specific host, timezone, or filesystem layout.</p>
+      </div>
+      <div class="card" style="border-color:#7f1d1d;">
+        <h3 class="warn">Silent Failures</h3>
+        <p style="margin-top:8px;">Errors now propagate as HTTP 5xx from the worker webhook — visible immediately to the event broker.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 9: How to Run It -->
+  <div class="slide">
+    <h2>How to Run It</h2>
+    <p style="margin-bottom:16px;">Assumes Docker is installed. Nothing else required.</p>
+    <pre><code># 1. Start MinIO + worker
+docker compose up -d
+
+# 2. Create input bucket and configure webhook trigger
+docker compose exec minio mc alias set local http://localhost:9000 minioadmin minioadmin
+docker compose exec minio mc mb local/recon-incoming
+docker compose exec minio mc mb local/recon-processed
+docker compose exec minio mc event add local/recon-incoming \
+  arn:minio:sqs::PRIMARY:webhook --event put
+
+# 3. Drop a file in — watch it process
+cp tests/fixtures/sample_recon.csv /tmp/
+docker compose exec minio mc cp /tmp/sample_recon.csv local/recon-incoming/
+
+# 4. Check output
+docker compose exec minio mc ls local/recon-processed/</code></pre>
+    <div class="gap"></div>
+    <p>Switch to S3: set <code>STORAGE_BACKEND=s3</code> and the relevant AWS env vars. Same image.</p>
+  </div>
+
+  <!-- Slide 10: Decisions & Trade-offs -->
+  <div class="slide">
+    <h2>Key Decisions</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3 class="accent">Webhook over message queue</h3>
+        <p>Simpler for local dev. MinIO supports both. Production can swap to SQS/Pub-Sub without changing worker code.</p>
+      </div>
+      <div class="card">
+        <h3 class="accent">Compatibility shim over consumer migration</h3>
+        <p>We don't own downstream. Shim lets us ship without a cross-team sprint. Remove it in Q3 once consumers migrate.</p>
+      </div>
+      <div class="card">
+        <h3 class="accent">Single container, no orchestrator</h3>
+        <p>Docker Compose is enough for the hackathon. K8s deployment YAML is scaffolded but not tested.</p>
+      </div>
+      <div class="card">
+        <h3 class="accent">Idempotent processing</h3>
+        <p>Worker checks output bucket before processing. Re-delivered events are safe — no double-reconciliation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 11: What's Real vs Scaffolding -->
+  <div class="slide">
+    <h2>What's Real vs Scaffolding</h2>
+    <div class="grid grid-2">
+      <div class="card" style="border-color:#14532d;">
+        <p class="label green">Ships Today</p>
+        <ul style="margin-top:8px;">
+          <li>Docker Compose local stack (MinIO + worker)</li>
+          <li>Webhook trigger endpoint</li>
+          <li>Storage abstraction (MinIO + S3 backends)</li>
+          <li>Compatibility shim (legacy path + webhook)</li>
+          <li>Idempotency check</li>
+          <li>Core reconciliation logic (ported, not rewritten)</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:#7f1d1d;">
+        <p class="label red">Scaffolding / TODO</p>
+        <ul style="margin-top:8px;">
+          <li>GCS backend (interface defined, not implemented)</li>
+          <li>Kubernetes deployment YAML</li>
+          <li>Dead-letter queue for failed events</li>
+          <li>Alerting on worker 5xx</li>
+          <li>Load / stress test for burst file arrivals</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 12: How We Used Claude Code -->
+  <div class="slide">
+    <h2>How We Used Claude Code</h2>
+    <ul style="gap:16px; margin-top:8px;">
+      <li><strong>Architecture sounding board</strong> — validated event-driven approach and shim strategy before writing a line of code.</li>
+      <li><strong>Boilerplate generation</strong> — Dockerfile, docker-compose.yml, FastAPI skeleton generated in seconds. We focused on reconciliation logic.</li>
+      <li><strong>Storage abstraction design</strong> — Claude suggested the <code>match</code> pattern for backend switching; saved a messy if/elif chain.</li>
+      <li><strong>Idempotency edge case</strong> — Claude caught the double-processing risk when we described the trigger flow. We added the output-bucket check immediately.</li>
+      <li><strong>Compatibility shim</strong> — prompted Claude with "downstream consumers can't change" and it drafted the copy + legacy webhook pattern.</li>
+    </ul>
+    <div class="gap-lg"></div>
+    <p>Biggest win: <span class="ok">architecture decisions in 10 minutes</span>, not 2 hours of whiteboarding. Biggest surprise: it flagged the NFS-in-container anti-pattern before we thought to ask.</p>
+  </div>
+
+  <!-- Slide 13: Close -->
+  <div class="slide" style="align-items:center; text-align:center;">
+    <p class="muted" style="font-size:0.85rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:16px;">Team 14 · The Rewire</p>
+    <h1>The 2am cron<br/><span class="accent">is dead.</span></h1>
+    <p style="margin-top:24px; font-size:1.2rem; color:#777;">Files arrive when they arrive.<br/>We process when they land.</p>
+    <div class="gap-lg"></div>
+    <div class="flow" style="justify-content:center; gap:16px;">
+      <span class="tag tag-kill">Cron killed</span>
+      <span class="tag tag-build">Event-driven</span>
+      <span class="tag tag-build">Containerized</span>
+      <span class="tag tag-ship">Downstream safe</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="slide-counter" id="counter">1 / 13</div>
+<nav>
+  <button onclick="prev()">← Prev</button>
+  <button onclick="next()">Next →</button>
+</nav>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function show(n) {
+    slides[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    document.getElementById('counter').textContent = `${current + 1} / ${slides.length}`;
+  }
+
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') next();
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                     prev();
+  });
+</script>
+
+</body>
+</html>
