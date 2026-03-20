@@ -12,8 +12,12 @@
 Scenario <2>: Cloud Migration
 
 ## What We Built
-2-3 paragraphs. What exists in this repo that didn't exist 3 hours ago.
-What runs, what's scaffolding, what's faked.
+
+We took Contoso Financial's three on-prem workloads — a customer-facing web app, a nightly batch reconciliation job, and a shared reporting database — and produced cloud-ready artifacts that run locally with production-equivalent architecture on AWS (ECS Fargate + RDS PostgreSQL + ElastiCache + S3).
+
+The centrepiece is a Docker Compose stack where every local service maps directly to an AWS managed equivalent: MinIO → S3, Postgres → RDS, Redis → ElastiCache, Nginx → ALB. The same container image runs locally with `docker compose up` and deploys to ECS Fargate without code changes.
+
+We killed the 2am cron job entirely. The batch reconciliation worker is now event-driven — it triggers on file arrival in object storage (MinIO locally, S3 in prod) via bucket notifications. A compatibility shim preserves the legacy output path and webhook so downstream consumers need zero changes. We also produced a decision memo resolving the CFO/CTO conflict, a discovery document surfacing four undocumented dependencies, a three-option architecture comparison (EC2 lift vs ECS Fargate vs EKS), Terraform IaC scaffolding, a pre-migration validation test suite, a 12-month cost model showing 80% Year-2 savings, a DR runbook (RTO 30 min / RPO 5 min), and a per-workload rollback plan.
 
 ## Challenges Attempted
 | # | Challenge | Status | Notes |
