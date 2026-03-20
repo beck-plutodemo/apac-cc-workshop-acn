@@ -13,6 +13,7 @@ Welcome to the Mini-Hackathon session! This document covers the hackathon brief 
 **Teams:** You will be assigned to a team at the start of the session. Teams are typically 2–4 participants.
 
 **Challenge:** Your team must use Claude Code to:
+
 1. Identify a problem or opportunity in the starter app
 2. Implement a solution using Claude Code as your primary coding assistant
 3. Document what you built and how Claude Code helped
@@ -35,6 +36,7 @@ submissions/
 Replace `N` with your team number and `hackathon-name` with a short slug describing your submission.
 
 **Examples:**
+
 ```
 team1_smart-reorder
 team2_claude-inventory-audit
@@ -62,21 +64,27 @@ Your `README.md` should cover:
 # Team N — [Hackathon Name]
 
 ## Team Members
+
 - Name, Role
 
 ## Problem Statement
+
 What problem did you tackle and why?
 
 ## Solution Overview
+
 What did you build? How does it work?
 
 ## How We Used Claude Code
+
 Describe the specific Claude Code features and commands you used.
 
 ## Demo
+
 Link to a short demo video or screenshots (optional but encouraged).
 
 ## Lessons Learned
+
 What worked well? What would you do differently?
 ```
 
@@ -100,6 +108,7 @@ You can generate a starter `CLAUDE.md` by running `/init` in your project direct
 Your `submission.html` is a **single self-contained HTML file** that acts as a presentation slide. It will be displayed during the judging session.
 
 **Requirements:**
+
 - Single HTML file (inline all CSS and JS — no external dependencies)
 - Renders correctly when opened directly in a browser
 - Covers: team name, problem, solution, key Claude Code moments, outcome
@@ -110,37 +119,57 @@ Your `submission.html` is a **single self-contained HTML file** that acts as a p
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Team N — Hackathon Submission</title>
-  <style>
-    body { font-family: sans-serif; background: #0f0f0f; color: #f0f0f0; margin: 0; padding: 2rem; }
-    h1 { color: #e8912d; }
-    h2 { color: #a78bfa; margin-top: 2rem; }
-    ul { line-height: 1.8; }
-    .tag { background: #1e1e2e; border: 1px solid #a78bfa; border-radius: 4px; padding: 2px 8px; font-size: 0.85rem; margin-right: 4px; }
-  </style>
-</head>
-<body>
-  <h1>Team N — Your Hackathon Name</h1>
-  <p><strong>Team Members:</strong> Name 1, Name 2</p>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Team N — Hackathon Submission</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #0f0f0f;
+        color: #f0f0f0;
+        margin: 0;
+        padding: 2rem;
+      }
+      h1 {
+        color: #e8912d;
+      }
+      h2 {
+        color: #a78bfa;
+        margin-top: 2rem;
+      }
+      ul {
+        line-height: 1.8;
+      }
+      .tag {
+        background: #1e1e2e;
+        border: 1px solid #a78bfa;
+        border-radius: 4px;
+        padding: 2px 8px;
+        font-size: 0.85rem;
+        margin-right: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Team N — Your Hackathon Name</h1>
+    <p><strong>Team Members:</strong> Name 1, Name 2</p>
 
-  <h2>Problem</h2>
-  <p>Describe the problem you solved.</p>
+    <h2>Problem</h2>
+    <p>Describe the problem you solved.</p>
 
-  <h2>Solution</h2>
-  <p>Describe what you built.</p>
+    <h2>Solution</h2>
+    <p>Describe what you built.</p>
 
-  <h2>How We Used Claude Code</h2>
-  <ul>
-    <li>Used <code>/init</code> to scaffold the project</li>
-    <li>Used Claude Code to generate unit tests</li>
-    <li>...</li>
-  </ul>
+    <h2>How We Used Claude Code</h2>
+    <ul>
+      <li>Used <code>/init</code> to scaffold the project</li>
+      <li>Used Claude Code to generate unit tests</li>
+      <li>...</li>
+    </ul>
 
-  <h2>Outcome</h2>
-  <p>What was the result? What would you do next?</p>
-</body>
+    <h2>Outcome</h2>
+    <p>What was the result? What would you do next?</p>
+  </body>
 </html>
 ```
 

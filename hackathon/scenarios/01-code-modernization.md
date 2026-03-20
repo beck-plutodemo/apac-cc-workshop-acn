@@ -12,16 +12,16 @@ You pick the language, the era, the architecture, the decomposition strategy. Th
 
 ## Pick Your Legacy (or invent your own)
 
-| Flavor | What Claude generates for you |
-|---|---|
-| **PHP 5 monolith** | `index.php`, SQL strings concatenated inline, sessions in globals |
-| **Enterprise Java 2010** | Spring XML config, `AbstractSingletonProxyFactoryBean`, WAR on WebLogic |
-| **Stored-proc architecture** | 40 T-SQL procs that *are* the business logic, app is a thin shell |
-| **Early Node callback hell** | Express 3, callbacks 6 deep, logic in Mongoose pre-save hooks |
-| **Rails 2 majestic monolith** | Fat models, `lib/` doing unspeakable things, cron + rake jobs |
-| **Classic ASP / VB6** | COM components, ADO recordsets, inline VBScript |
-| **SOAP service tangle** | WSDL files, an ESB that's actually just a queue |
-| **COBOL + batch** | Fixed-width files, JCL, nightly batch that can't be interrupted |
+| Flavor                        | What Claude generates for you                                           |
+| ----------------------------- | ----------------------------------------------------------------------- |
+| **PHP 5 monolith**            | `index.php`, SQL strings concatenated inline, sessions in globals       |
+| **Enterprise Java 2010**      | Spring XML config, `AbstractSingletonProxyFactoryBean`, WAR on WebLogic |
+| **Stored-proc architecture**  | 40 T-SQL procs that _are_ the business logic, app is a thin shell       |
+| **Early Node callback hell**  | Express 3, callbacks 6 deep, logic in Mongoose pre-save hooks           |
+| **Rails 2 majestic monolith** | Fat models, `lib/` doing unspeakable things, cron + rake jobs           |
+| **Classic ASP / VB6**         | COM components, ADO recordsets, inline VBScript                         |
+| **SOAP service tangle**       | WSDL files, an ESB that's actually just a queue                         |
+| **COBOL + batch**             | Fixed-width files, JCL, nightly batch that can't be interrupted         |
 
 **Modernize toward:** Strangler fig • Containerize-and-ship • Event-driven • API façade • Serverless extraction • DB-first split. Your call.
 
@@ -31,25 +31,25 @@ You pick the language, the era, the architecture, the decomposition strategy. Th
 
 Pick a lane or pair up. Nobody finishes all ten — that's the point.
 
-**1 — The Stories.** *(PM)* Write user stories for the three most important business capabilities in this system. You decide what they are. Acceptance criteria that a tester could actually execute.
+**1 — The Stories.** _(PM)_ Write user stories for the three most important business capabilities in this system. You decide what they are. Acceptance criteria that a tester could actually execute.
 
-**2 — The Patient.** *(Architect)* Generate the legacy monolith. 4–6 modules, shared database, at least two circular dependencies, one God class. Make it realistic — including the parts that make you wince.
+**2 — The Patient.** _(Architect)_ Generate the legacy monolith. 4–6 modules, shared database, at least two circular dependencies, one God class. Make it realistic — including the parts that make you wince.
 
-**3 — The Map.** *(Architect)* Produce a decomposition plan. Strangler fig, branch-by-abstraction, your call. Name the seams. Rank the services by extraction risk.
+**3 — The Map.** _(Architect)_ Produce a decomposition plan. Strangler fig, branch-by-abstraction, your call. Name the seams. Rank the services by extraction risk.
 
-**4 — The Pin.** *(Tester)* Write characterization tests against the monolith before anyone touches it. You're not testing correctness — you're pinning behavior.
+**4 — The Pin.** _(Tester)_ Write characterization tests against the monolith before anyone touches it. You're not testing correctness — you're pinning behavior.
 
-**5 — The Cut.** *(Dev)* Extract your first service. Clean API contract. The monolith still works. Prove both.
+**5 — The Cut.** _(Dev)_ Extract your first service. Clean API contract. The monolith still works. Prove both.
 
-**6 — The Fence.** *(Dev)* Build an anti-corruption layer between old and new. The monolith's data model should not leak into your new service.
+**6 — The Fence.** _(Dev)_ Build an anti-corruption layer between old and new. The monolith's data model should not leak into your new service.
 
-**7 — The Contract.** *(Tester)* Contract tests between the monolith and the new service. Both sides. If one changes, the other screams.
+**7 — The Contract.** _(Tester)_ Contract tests between the monolith and the new service. Both sides. If one changes, the other screams.
 
-**8 — The Pipeline.** *(Infra)* CI/CD that builds and deploys both monolith and service. Independently. One failing doesn't block the other.
+**8 — The Pipeline.** _(Infra)_ CI/CD that builds and deploys both monolith and service. Independently. One failing doesn't block the other.
 
-**9 — The Second Cut.** *(Stretch)* Extract a second service. This one talks to the first via events, not HTTP. Handle the dual-write problem.
+**9 — The Second Cut.** _(Stretch)_ Extract a second service. This one talks to the first via events, not HTTP. Handle the dual-write problem.
 
-**10 — The Weekend.** *(Stretch)* Write the cutover runbook. Steps, rollback triggers, the 3am decision tree. The one ops will actually follow.
+**10 — The Weekend.** _(Stretch)_ Write the cutover runbook. Steps, rollback triggers, the 3am decision tree. The one ops will actually follow.
 
 ---
 
@@ -59,9 +59,10 @@ Don't want to spend time generating the legacy? We've got one lying around.
 
 **[https://github.com/rishikeshradhakrishnan/spring-music](https://github.com/rishikeshradhakrishnan/spring-music)**
 
-Spring Music is a Spring Boot sample app built for Cloud Foundry. It stores the same domain objects across relational, document, and key-value stores using bean profiles and Spring Cloud Connectors. It was never meant to be realistic — it was meant to demo persistence options. Which is exactly why it's a perfect stand-in for *"someone built this to prove a point and then it accidentally became production."*
+Spring Music is a Spring Boot sample app built for Cloud Foundry. It stores the same domain objects across relational, document, and key-value stores using bean profiles and Spring Cloud Connectors. It was never meant to be realistic — it was meant to demo persistence options. Which is exactly why it's a perfect stand-in for _"someone built this to prove a point and then it accidentally became production."_
 
 **If you use it:**
+
 - **Skip Challenge 2** (The Patient) — you already have one.
 - **Challenge 1** still applies — reverse-engineer the business capabilities from what's in the repo.
 - Everything from **Challenge 3 onward** works as-is. The seams are there. Find them.

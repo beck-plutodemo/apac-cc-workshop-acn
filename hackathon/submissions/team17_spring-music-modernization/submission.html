@@ -1,0 +1,1886 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team 17 — Spring Music Modernization</title>
+    <style>
+      /* ─── Reset ─── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #0d1117;
+        --bg2: #161b22;
+        --bg3: #21262d;
+        --border: #30363d;
+        --border2: #3d444d;
+        --text: #f0f6fc;
+        --text2: #c9d1d9;
+        --text3: #8b949e;
+        --orange: #f97316;
+        --orange-dim: #431407;
+        --orange-mid: #7c2d12;
+        --green: #3fb950;
+        --green-dim: #0d2b12;
+        --red: #f85149;
+        --red-dim: #2e0c0a;
+        --blue: #58a6ff;
+        --blue-dim: #051d40;
+        --purple: #bc8cff;
+        --purple-dim: #1f1035;
+        --amber: #fbbf24;
+        --amber-dim: #2d1d00;
+        --teal: #2dd4bf;
+        --teal-dim: #042926;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        font-size: 14px;
+      }
+
+      /* ─── Sticky Nav ─── */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(13, 17, 23, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+        padding: 0.55rem 2.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+      }
+      .nav-brand {
+        font-weight: 800;
+        font-size: 0.9rem;
+        color: var(--orange);
+        margin-right: 1rem;
+      }
+      .nav a {
+        color: var(--text3);
+        text-decoration: none;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.25rem 0.6rem;
+        border-radius: 6px;
+        transition: all 0.15s;
+      }
+      .nav a:hover {
+        background: var(--bg3);
+        color: var(--text);
+      }
+      .nav-sep {
+        color: var(--border2);
+        font-size: 0.7rem;
+        padding: 0 0.1rem;
+      }
+      .nav-right {
+        margin-left: auto;
+        font-size: 0.72rem;
+        color: var(--text3);
+      }
+
+      /* ─── Layout ─── */
+      .page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 2rem 5rem;
+      }
+      section {
+        padding-top: 4rem;
+        padding-bottom: 0.5rem;
+      }
+
+      .section-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--text3);
+        margin-bottom: 0.5rem;
+      }
+      .min-badge {
+        background: var(--orange);
+        color: #fff;
+        padding: 1px 8px;
+        border-radius: 20px;
+        font-size: 0.65rem;
+        font-weight: 800;
+      }
+      h2.section-h {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--text);
+        line-height: 1.15;
+        margin-bottom: 0.35rem;
+      }
+      h2.section-h span {
+        color: var(--orange);
+      }
+      .section-sub {
+        font-size: 0.9rem;
+        color: var(--text3);
+        margin-bottom: 1.8rem;
+        max-width: 700px;
+      }
+
+      hr.div {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin-top: 3rem;
+      }
+
+      /* ─── Hero ─── */
+      .hero {
+        padding: 3.5rem 0 2rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .hero-eyebrow {
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--orange);
+        margin-bottom: 0.8rem;
+      }
+      .hero-title {
+        font-size: 3rem;
+        font-weight: 900;
+        line-height: 1.05;
+        color: var(--text);
+        margin-bottom: 0.6rem;
+      }
+      .hero-title em {
+        font-style: normal;
+        color: var(--orange);
+      }
+      .hero-sub {
+        font-size: 1.05rem;
+        color: var(--text2);
+        max-width: 620px;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+      }
+
+      /* team grid */
+      .team-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin-bottom: 1.8rem;
+      }
+      .team-card {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.55rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .team-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--orange-dim);
+        border: 1px solid var(--orange);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: var(--orange);
+        flex-shrink: 0;
+      }
+      .team-name {
+        font-size: 0.83rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+      .team-role {
+        font-size: 0.72rem;
+        color: var(--text3);
+      }
+
+      /* meta row */
+      .meta-row {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+      .meta-item .meta-label {
+        font-size: 0.67rem;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+      }
+      .meta-item .meta-val {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-top: 0.1rem;
+      }
+
+      /* ─── Stats bar ─── */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 1.5rem 0;
+      }
+      .stat {
+        background: var(--bg2);
+        padding: 1.1rem 0.5rem;
+        text-align: center;
+      }
+      .stat-n {
+        font-size: 1.9rem;
+        font-weight: 900;
+        line-height: 1;
+        color: var(--orange);
+      }
+      .stat-n.g {
+        color: var(--green);
+      }
+      .stat-n.b {
+        color: var(--blue);
+      }
+      .stat-n.p {
+        color: var(--purple);
+      }
+      .stat-l {
+        font-size: 0.67rem;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 0.3rem;
+        line-height: 1.35;
+      }
+
+      /* ─── Cards ─── */
+      .card {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1.4rem 1.5rem;
+      }
+      .card-red {
+        background: var(--red-dim);
+        border-color: #6e1e1e;
+      }
+      .card-green {
+        background: var(--green-dim);
+        border-color: #1a4d26;
+      }
+      .card-blue {
+        background: var(--blue-dim);
+        border-color: #0c3566;
+      }
+      .card-purple {
+        background: var(--purple-dim);
+        border-color: #3d1f7a;
+      }
+      .card-amber {
+        background: var(--amber-dim);
+        border-color: #5c3d00;
+      }
+      .card-teal {
+        background: var(--teal-dim);
+        border-color: #0a4040;
+      }
+
+      .card-hd {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        margin-bottom: 1rem;
+      }
+      .card-hd.red {
+        color: var(--red);
+      }
+      .card-hd.green {
+        color: var(--green);
+      }
+      .card-hd.blue {
+        color: var(--blue);
+      }
+      .card-hd.purple {
+        color: var(--purple);
+      }
+      .card-hd.amber {
+        color: var(--amber);
+      }
+      .card-hd.orange {
+        color: var(--orange);
+      }
+      .card-hd.teal {
+        color: var(--teal);
+      }
+
+      /* ─── Grids ─── */
+      .g2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem;
+        margin-bottom: 1.2rem;
+      }
+      .g3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1.2rem;
+        margin-bottom: 1.2rem;
+      }
+
+      /* ─── Issue rows ─── */
+      .issue {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.7rem;
+        margin-bottom: 0.85rem;
+      }
+      .badge {
+        display: inline-block;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 0.6rem;
+        font-weight: 900;
+        letter-spacing: 0.07em;
+        white-space: nowrap;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      .b-crit {
+        background: #f85149;
+        color: #fff;
+      }
+      .b-break {
+        background: #f97316;
+        color: #fff;
+      }
+      .b-silent {
+        background: #fbbf24;
+        color: #000;
+      }
+      .b-high {
+        background: #a78bfa;
+        color: #fff;
+      }
+      .b-medium {
+        background: #3fb950;
+        color: #000;
+      }
+      .issue-txt {
+        font-size: 0.85rem;
+        color: var(--text2);
+        line-height: 1.45;
+      }
+      .issue-txt code {
+        font-family: "Cascadia Code", "Consolas", monospace;
+        background: var(--bg3);
+        border: 1px solid var(--border2);
+        padding: 0 4px;
+        border-radius: 3px;
+        font-size: 0.82em;
+        color: var(--text);
+      }
+
+      /* ─── Layer strip ─── */
+      .layers {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 1.2rem;
+      }
+      .layer {
+        background: var(--bg2);
+        padding: 1.2rem 1.1rem;
+      }
+      .layer-n {
+        font-size: 0.62rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--orange);
+        margin-bottom: 0.25rem;
+      }
+      .layer-title {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.6rem;
+      }
+      .layer ul {
+        list-style: none;
+      }
+      .layer li {
+        font-size: 0.78rem;
+        color: var(--text2);
+        padding: 0.15rem 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.35rem;
+      }
+      .layer li::before {
+        content: "✓";
+        color: var(--green);
+        font-weight: 700;
+        flex-shrink: 0;
+        margin-top: 1px;
+        font-size: 0.75rem;
+      }
+
+      /* ─── Migration table ─── */
+      .mig {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.83rem;
+      }
+      .mig th {
+        background: var(--bg3);
+        color: var(--text3);
+        text-align: left;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        border-bottom: 1px solid var(--border);
+      }
+      .mig td {
+        padding: 0.5rem 0.8rem;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+      }
+      .mig tr:last-child td {
+        border-bottom: none;
+      }
+      .c-b {
+        font-family: "Cascadia Code", "Consolas", monospace;
+        color: var(--red);
+        font-size: 0.8rem;
+      }
+      .c-a {
+        font-family: "Cascadia Code", "Consolas", monospace;
+        color: var(--green);
+        font-size: 0.8rem;
+      }
+      .c-w {
+        color: var(--text3);
+        font-size: 0.79rem;
+      }
+
+      /* ─── ADR cards ─── */
+      .adr {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--purple);
+        border-radius: 8px;
+        padding: 1rem 1.2rem;
+        margin-bottom: 0.85rem;
+      }
+      .adr-top {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 0.35rem;
+        flex-wrap: wrap;
+      }
+      .adr-num {
+        font-size: 0.62rem;
+        font-weight: 900;
+        color: var(--purple);
+        background: var(--purple-dim);
+        border: 1px solid #4a2d8a;
+        padding: 1px 7px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        white-space: nowrap;
+      }
+      .adr-title {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .adr-body {
+        font-size: 0.82rem;
+        color: var(--text2);
+        line-height: 1.5;
+        margin-bottom: 0.35rem;
+      }
+      .adr-rej {
+        font-size: 0.78rem;
+        color: var(--text3);
+        display: flex;
+        align-items: flex-start;
+        gap: 0.4rem;
+      }
+      .adr-rej::before {
+        content: "✗";
+        color: var(--red);
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+
+      /* ─── Hierarchy ─── */
+      .hier {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 1.2rem;
+      }
+      .hier-hd {
+        background: var(--bg3);
+        padding: 0.55rem 1.2rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text3);
+        border-bottom: 1px solid var(--border);
+      }
+      .hier-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 0.85rem 1.2rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .hier-row:last-child {
+        border-bottom: none;
+      }
+      .h-lvl {
+        font-size: 0.6rem;
+        font-weight: 900;
+        padding: 2px 8px;
+        border-radius: 4px;
+        flex-shrink: 0;
+        margin-top: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .h1 {
+        background: var(--amber-dim);
+        color: var(--amber);
+        border: 1px solid #5c3d00;
+      }
+      .h2 {
+        background: var(--blue-dim);
+        color: var(--blue);
+        border: 1px solid #0c3566;
+      }
+      .h3 {
+        background: var(--purple-dim);
+        color: var(--purple);
+        border: 1px solid #3d1f7a;
+      }
+      .h-path {
+        font-family: "Cascadia Code", "Consolas", monospace;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 0.2rem;
+      }
+      .h-desc {
+        font-size: 0.79rem;
+        color: var(--text3);
+        line-height: 1.45;
+      }
+
+      /* ─── Test items ─── */
+      .test-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.7rem;
+        padding: 0.55rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .test-item:last-child {
+        border-bottom: none;
+      }
+      .ti-icon {
+        width: 22px;
+        height: 22px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.68rem;
+        font-weight: 900;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .ti-pass {
+        background: var(--green-dim);
+        border: 1px solid #1a4d26;
+        color: var(--green);
+      }
+      .ti-warn {
+        background: var(--amber-dim);
+        border: 1px solid #5c3d00;
+        color: var(--amber);
+      }
+      .ti-name {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1.35;
+      }
+      .ti-desc {
+        font-size: 0.78rem;
+        color: var(--text3);
+        margin-top: 0.1rem;
+        line-height: 1.4;
+      }
+
+      /* ─── Claude usage cards ─── */
+      .cu {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.1rem 1.2rem;
+      }
+      .cu-title {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--orange);
+        margin-bottom: 0.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .cu-title::before {
+        content: "";
+        display: inline-block;
+        width: 3px;
+        height: 0.85em;
+        background: var(--orange);
+        border-radius: 2px;
+      }
+      .cu-body {
+        font-size: 0.81rem;
+        color: var(--text2);
+        line-height: 1.55;
+      }
+      .cu-out {
+        font-size: 0.76rem;
+        color: var(--green);
+        font-weight: 600;
+        margin-top: 0.4rem;
+      }
+
+      /* ─── Judging bar ─── */
+      .judging {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+      }
+      .j-cell {
+        background: var(--bg2);
+        padding: 1rem 0.9rem;
+        border-top: 3px solid var(--orange);
+      }
+      .j-title {
+        font-size: 0.68rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--orange);
+        margin-bottom: 0.35rem;
+      }
+      .j-body {
+        font-size: 0.77rem;
+        color: var(--text3);
+        line-height: 1.5;
+      }
+
+      /* ─── Quote ─── */
+      .quote {
+        border-left: 3px solid var(--orange);
+        padding: 0.7rem 1.1rem;
+        background: var(--orange-dim);
+        border-radius: 0 6px 6px 0;
+        margin: 1rem 0;
+        font-size: 0.86rem;
+        color: var(--text2);
+        font-style: italic;
+        line-height: 1.6;
+      }
+
+      /* ─── Tags ─── */
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: 0.6rem;
+      }
+      .tag {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.74rem;
+        font-weight: 600;
+      }
+      .t-o {
+        background: var(--orange-dim);
+        border: 1px solid var(--orange-mid);
+        color: var(--orange);
+      }
+      .t-g {
+        background: var(--green-dim);
+        border: 1px solid #1a4d26;
+        color: var(--green);
+      }
+      .t-b {
+        background: var(--blue-dim);
+        border: 1px solid #0c3566;
+        color: var(--blue);
+      }
+      .t-p {
+        background: var(--purple-dim);
+        border: 1px solid #3d1f7a;
+        color: var(--purple);
+      }
+      .t-a {
+        background: var(--amber-dim);
+        border: 1px solid #5c3d00;
+        color: var(--amber);
+      }
+      .t-t {
+        background: var(--teal-dim);
+        border: 1px solid #0a4040;
+        color: var(--teal);
+      }
+
+      /* ─── Code block ─── */
+      .codeblock {
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.1rem 1.3rem;
+        font-family: "Cascadia Code", "Consolas", monospace;
+        font-size: 0.8rem;
+        color: var(--text2);
+        line-height: 1.9;
+        overflow-x: auto;
+      }
+      .comment {
+        color: var(--text3);
+      }
+      .cmd {
+        color: var(--green);
+      }
+      .flag {
+        color: var(--blue);
+      }
+      .url {
+        color: var(--teal);
+      }
+
+      /* ─── Inline code ─── */
+      code {
+        font-family: "Cascadia Code", "Consolas", monospace;
+        background: var(--bg3);
+        border: 1px solid var(--border2);
+        padding: 1px 5px;
+        border-radius: 3px;
+        font-size: 0.82em;
+        color: var(--text);
+      }
+
+      /* ─── Row table ─── */
+      .row-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.84rem;
+      }
+      .row-table th {
+        background: var(--bg3);
+        padding: 0.5rem 0.9rem;
+        text-align: left;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--text3);
+        border-bottom: 1px solid var(--border);
+      }
+      .row-table td {
+        padding: 0.55rem 0.9rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--text2);
+        vertical-align: top;
+      }
+      .row-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* ─── Footer ─── */
+      .footer {
+        margin-top: 4rem;
+        padding: 1.2rem 0;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.77rem;
+        color: var(--text3);
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      .footer strong {
+        color: var(--orange);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ─── Sticky Nav ─── -->
+    <nav class="nav">
+      <span class="nav-brand">Team 17</span>
+      <a href="#intro">Intro</a><span class="nav-sep">›</span>
+      <a href="#problem">Problem</a><span class="nav-sep">›</span>
+      <a href="#solution">Solution</a><span class="nav-sep">›</span>
+      <a href="#architecture">Architecture</a><span class="nav-sep">›</span>
+      <a href="#testing">Testing</a><span class="nav-sep">›</span>
+      <a href="#claude">Claude Code</a><span class="nav-sep">›</span>
+      <a href="#outcome">Outcome</a>
+      <span class="nav-right"
+        >APAC Claude Code Workshop · Scenario 1 — Code Modernization</span
+      >
+    </nav>
+
+    <div class="page">
+      <!-- ══════════════════════════════════════════
+       SLIDE 1 — TITLE  [0:00 – 0:30]
+  ══════════════════════════════════════════════ -->
+      <section class="hero" id="intro">
+        <div class="hero-eyebrow">
+          Team 17 · Scenario 1 — Code Modernization · APAC Claude Code Workshop
+          2026
+        </div>
+        <h1 class="hero-title">Spring Music<br /><em>Modernization</em></h1>
+        <p class="hero-sub">
+          A legacy Spring Boot 2.4 app that compiles fine today — but cannot
+          survive its next upgrade. We resolved every breaking issue across four
+          layers in 60 minutes, using Claude Code end to end.
+        </p>
+
+        <div class="team-grid">
+          <div class="team-card">
+            <div class="team-avatar">CR</div>
+            <div>
+              <div class="team-name">Charan Raghupatruni</div>
+              <div class="team-role">Developer / Architect</div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">SM</div>
+            <div>
+              <div class="team-name">Sinsirimongkhon, Mongkhon</div>
+              <div class="team-role">Developer</div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">JT</div>
+            <div>
+              <div class="team-name">Junhom, Thanakrit</div>
+              <div class="team-role">Developer</div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">MB</div>
+            <div>
+              <div class="team-name">Mongkolsri, Boom</div>
+              <div class="team-role">Developer</div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">IS</div>
+            <div>
+              <div class="team-name">Imjongjairak, Sutinun</div>
+              <div class="team-role">Developer</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <div class="meta-label">Stack Before</div>
+            <div class="meta-val">
+              Spring Boot 2.4.0 · Java 8 · Gradle 6.7 · JUnit 4
+            </div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Stack After</div>
+            <div class="meta-val">
+              Spring Boot 3.2.3 · Java 17 LTS · Gradle 8.5 · JUnit 5
+            </div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Primary Tool</div>
+            <div class="meta-val">Claude Code — end to end</div>
+          </div>
+        </div>
+      </section>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-n">2.4</div>
+          <div class="stat-l">Spring Boot<br />Before</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n g">3.2</div>
+          <div class="stat-l">Spring Boot<br />After</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">12</div>
+          <div class="stat-l">Breaking Issues<br />Found &amp; Fixed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n g">6</div>
+          <div class="stat-l">Adversarial<br />Tests Added</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n p">4</div>
+          <div class="stat-l">ADRs<br />Documented</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n b">3</div>
+          <div class="stat-l">CLAUDE.md<br />Hierarchy Levels</div>
+        </div>
+      </div>
+
+      <hr class="div" />
+
+      <!-- ══════════════════════════════════════════
+       SLIDE 2 — THE PROBLEM  [0:30 – 1:30]
+  ══════════════════════════════════════════════ -->
+      <section id="problem">
+        <div class="section-label">
+          <span class="min-badge">Min 1</span> The Problem
+        </div>
+        <h2 class="section-h">
+          It compiles. It runs. <span>It looks fine.</span>
+        </h2>
+        <p class="section-sub">
+          But underneath, this app is a collection of quiet time-bombs — none
+          visible until you try to upgrade. Claude Code performed a full
+          codebase scan and enumerated all 12 issues before a single file was
+          changed.
+        </p>
+
+        <div class="g2">
+          <div class="card card-red">
+            <div class="card-hd red">Critical &amp; Breaking Issues</div>
+            <div class="issue">
+              <span class="badge b-crit">CRITICAL</span>
+              <div class="issue-txt">
+                <code>jcenter()</code> in build.gradle —
+                <strong>shut down February 2022.</strong> New contributors
+                cannot build the project at all. Build fails before a single
+                line compiles.
+              </div>
+            </div>
+            <div class="issue">
+              <span class="badge b-crit">CRITICAL</span>
+              <div class="issue-txt">
+                <code>javax.persistence.*</code> and
+                <code>javax.validation.*</code> — Spring Boot 3.x migrated to
+                Jakarta EE 10. These imports cause a <em>compile failure</em> on
+                any upgrade attempt.
+              </div>
+            </div>
+            <div class="issue">
+              <span class="badge b-break">BREAKING</span>
+              <div class="issue-txt">
+                <code>com.mysql.jdbc.Driver</code> — removed from MySQL
+                Connector/J 8+. Results in a runtime crash when connecting to
+                any modern MySQL instance.
+              </div>
+            </div>
+            <div class="issue">
+              <span class="badge b-break">BREAKING</span>
+              <div class="issue-txt">
+                <code>MySQL55Dialect</code> and <code>ProgressDialect</code> —
+                renamed in Hibernate 6, which ships with Spring Boot 3.x.
+                Application fails on startup.
+              </div>
+            </div>
+            <div class="issue">
+              <span class="badge b-silent">SILENT</span>
+              <div class="issue-txt">
+                <code>spring.profiles: mysql</code> in application.yml —
+                deprecated in 2.4, silently ignored in 3.x. All DB profiles
+                never activate. <em>No error, no warning, no clue.</em>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-hd amber">High &amp; Medium Issues</div>
+            <div class="issue">
+              <span class="badge b-high">HIGH</span>
+              <div class="issue-txt">
+                Gradle 6.7 with legacy <code>buildscript {}</code> +
+                <code>apply plugin:</code> DSL — incompatible with Spring Boot
+                3.x Gradle plugin.
+              </div>
+            </div>
+            <div class="issue">
+              <span class="badge b-high">HIGH</span>
+              <div class="issue-txt">
+                Spring Boot 2.x reached
+                <strong>end-of-life November 2023</strong>. No security patches.
+                Running an unsupported platform.
+              </div>
+            </div>
+            <div class="issue">
+              <span class="badge b-high">HIGH</span>
+              <div class="issue-txt">
+                Only 1 test: an empty <code>contextLoads()</code> stub. Zero
+                behavioural coverage — nothing pins controller semantics before
+                or after migration.
+              </div>
+            </div>
+            <div class="issue">
+              <span class="badge b-medium">MEDIUM</span>
+              <div class="issue-txt">
+                JUnit 4 runner (<code>@RunWith(SpringRunner.class)</code>) — no
+                <code>@BeforeEach</code> isolation, no JUnit 5 extension model.
+              </div>
+            </div>
+            <div class="issue">
+              <span class="badge b-medium">MEDIUM</span>
+              <div class="issue-txt">
+                <code>@RequestMapping(method = RequestMethod.GET)</code>
+                throughout — verbose, non-idiomatic Spring MVC. Obscures intent.
+              </div>
+            </div>
+            <div class="issue">
+              <span class="badge b-medium">MEDIUM</span>
+              <div class="issue-txt">
+                Logger concatenation: <code>"Album " + id</code> — allocates
+                strings even when the log level would discard the message.
+              </div>
+            </div>
+            <div class="issue">
+              <span class="badge b-medium">MEDIUM</span>
+              <div class="issue-txt">
+                Raw type <code>CrudRepository</code> (no generics) — unchecked
+                casts, no compile-time type safety.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quote">
+          This is the real modernization problem: not a big-bang rewrite, but a
+          quiet accumulation of time-bombs that nobody is watching. The team has
+          been shipping features. The platform has been decaying underneath
+          them.
+        </div>
+      </section>
+
+      <hr class="div" />
+
+      <!-- ══════════════════════════════════════════
+       SLIDE 3 — WHAT WE BUILT  [1:30 – 2:30]
+  ══════════════════════════════════════════════ -->
+      <section id="solution">
+        <div class="section-label">
+          <span class="min-badge">Min 2</span> What We Built
+        </div>
+        <h2 class="section-h">
+          Four layers. <span>Every issue resolved.</span>
+        </h2>
+        <p class="section-sub">
+          A complete migration from Spring Boot 2.4.0 → 3.2.3 on Java 17 LTS —
+          build first, then source, then configuration, then tests.
+        </p>
+
+        <div class="layers">
+          <div class="layer">
+            <div class="layer-n">Layer 1</div>
+            <div class="layer-title">Build</div>
+            <ul>
+              <li>Gradle 6.7 → <strong>8.5</strong></li>
+              <li><code>buildscript{}</code> → <code>plugins{}</code> DSL</li>
+              <li><code>jcenter()</code> removed entirely</li>
+              <li>JUnit 4 → <strong>JUnit 5</strong> platform</li>
+              <li>Lombok added (~60 lines removed)</li>
+              <li>mysql artifact renamed</li>
+              <li>Java target → <strong>17 LTS</strong></li>
+            </ul>
+          </div>
+          <div class="layer">
+            <div class="layer-n">Layer 2</div>
+            <div class="layer-title">Java Source</div>
+            <ul>
+              <li><code>javax.persistence.*</code> → <code>jakarta.*</code></li>
+              <li>
+                <code>javax.validation.Valid</code> → <code>jakarta.*</code>
+              </li>
+              <li>
+                <code>@RequestMapping</code> → <code>@GetMapping</code> etc.
+              </li>
+              <li>60 getters/setters → <code>@Data @Builder</code></li>
+              <li>Raw <code>CrudRepository</code> → typed</li>
+              <li>Logger concat → <code>{}</code> placeholders</li>
+              <li>Loop → <code>stream().toArray()</code></li>
+            </ul>
+          </div>
+          <div class="layer">
+            <div class="layer-n">Layer 3</div>
+            <div class="layer-title">Configuration</div>
+            <ul>
+              <li><code>spring.profiles:</code> → <code>on-profile:</code></li>
+              <li><code>com.mysql.jdbc.Driver</code> → <code>cj.jdbc</code></li>
+              <li><code>MySQL55Dialect</code> → <code>MySQLDialect</code></li>
+              <li>
+                <code>ProgressDialect</code> → <code>PostgreSQLDialect</code>
+              </li>
+              <li>All 4 DB profiles fixed</li>
+            </ul>
+          </div>
+          <div class="layer">
+            <div class="layer-n">Layer 4</div>
+            <div class="layer-title">Tests</div>
+            <ul>
+              <li>JUnit 4 stub → JUnit 5</li>
+              <li><code>@BeforeEach</code> repo reset</li>
+              <li>6 MockMvc integration tests</li>
+              <li>Full CRUD lifecycle covered</li>
+              <li>Edge cases + not-found path</li>
+              <li>Real design gap discovered</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-hd orange">Before → After: Key Code Changes</div>
+          <table class="mig">
+            <thead>
+              <tr>
+                <th style="width: 26%">Before</th>
+                <th style="width: 26%">After</th>
+                <th>Why It Matters</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="c-b">javax.persistence.*</td>
+                <td class="c-a">jakarta.persistence.*</td>
+                <td class="c-w">
+                  Spring Boot 3 uses Jakarta EE 10 — javax namespace removed
+                  from the platform entirely
+                </td>
+              </tr>
+              <tr>
+                <td class="c-b">javax.validation.Valid</td>
+                <td class="c-a">jakarta.validation.Valid</td>
+                <td class="c-w">
+                  Same Jakarta EE 10 migration — applies to all validation
+                  annotations
+                </td>
+              </tr>
+              <tr>
+                <td class="c-b">spring.profiles: mysql</td>
+                <td class="c-a">spring.config.activate.on-profile: mysql</td>
+                <td class="c-w">
+                  Old syntax silently ignored in 3.x — DB profiles never
+                  activated with no error
+                </td>
+              </tr>
+              <tr>
+                <td class="c-b">@RequestMapping(method = GET)</td>
+                <td class="c-a">@GetMapping / @PostMapping / ...</td>
+                <td class="c-w">
+                  Idiomatic, explicit — HTTP intent visible at a glance
+                </td>
+              </tr>
+              <tr>
+                <td class="c-b">60 lines of getters/setters</td>
+                <td class="c-a">@Data @Builder @NoArgsConstructor</td>
+                <td class="c-w">
+                  Same bytecode, ¼ the source — eliminates an entire maintenance
+                  category
+                </td>
+              </tr>
+              <tr>
+                <td class="c-b">MySQL55Dialect, ProgressDialect</td>
+                <td class="c-a">MySQLDialect, PostgreSQLDialect</td>
+                <td class="c-w">
+                  Class names renamed in Hibernate 6 (bundled with Spring Boot
+                  3.x)
+                </td>
+              </tr>
+              <tr>
+                <td class="c-b">logger.info("Album " + id)</td>
+                <td class="c-a">logger.info("Album {}", id)</td>
+                <td class="c-w">
+                  No string allocation when the log level discards the message
+                </td>
+              </tr>
+              <tr>
+                <td class="c-b">Raw CrudRepository</td>
+                <td class="c-a">CrudRepository&lt;Album, String&gt;</td>
+                <td class="c-w">
+                  Type safety — no unchecked casts, compiler validates all
+                  operations
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <hr class="div" />
+
+      <!-- ══════════════════════════════════════════
+       SLIDE 4 — ARCHITECTURE DECISIONS  [2:30 – 3:30]
+  ══════════════════════════════════════════════ -->
+      <section id="architecture">
+        <div class="section-label">
+          <span class="min-badge">Min 3</span> Architecture Decisions
+        </div>
+        <h2 class="section-h">
+          ADRs, diagrams, <span>decisions that age well.</span>
+        </h2>
+        <p class="section-sub">
+          Every non-obvious decision was made explicitly, documented with the
+          rejected alternative, and encoded in <code>CLAUDE.md</code> as a
+          living Architecture Decision Record.
+        </p>
+
+        <div class="g2" style="margin-bottom: 1.2rem">
+          <div>
+            <div class="adr">
+              <div class="adr-top">
+                <span class="adr-num">ADR-1</span
+                ><span class="adr-title"
+                  >Full Spring Boot 3 upgrade — not a 2.x patch</span
+                >
+              </div>
+              <div class="adr-body">
+                Spring Boot 2.x reached EOL November 2023. The
+                <code>javax</code>→<code>jakarta</code> migration is a one-time,
+                non-reversible change. Patching to 2.7.x defers this work
+                without avoiding it. The pain is the same; the delay just adds
+                risk and accumulates more EOL exposure.
+              </div>
+              <div class="adr-rej">
+                Rejected: stay on 2.7.x and patch. No security updates,
+                migration must happen anyway.
+              </div>
+            </div>
+            <div class="adr">
+              <div class="adr-top">
+                <span class="adr-num">ADR-2</span
+                ><span class="adr-title"
+                  >Lombok over Java Records for the Album entity</span
+                >
+              </div>
+              <div class="adr-body">
+                Java Records are immutable by default. JPA entity proxies
+                require a <strong>mutable, no-args constructor</strong>.
+                Lombok's <code>@Data</code> + <code>@Builder</code> +
+                <code>@NoArgsConstructor</code> satisfies both JPA constraints
+                and eliminates boilerplate. Same bytecode, less source.
+              </div>
+              <div class="adr-rej">
+                Rejected: Java Record — immutable by default, breaks JPA proxy
+                generation at runtime.
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="adr">
+              <div class="adr-top">
+                <span class="adr-num">ADR-3</span
+                ><span class="adr-title">AngularJS UI left unchanged</span>
+              </div>
+              <div class="adr-body">
+                AngularJS 1.x is EOL, but replacing the frontend is a
+                <em>separate concern</em> from a backend modernization pass.
+                Doing it here would dilute the deliverable and blur the scope.
+                Documented explicitly as the next phase with rationale.
+              </div>
+              <div class="adr-rej">
+                Rejected: replace with Vue 3 — out of scope, would dilute the
+                backend migration work.
+              </div>
+            </div>
+            <div class="adr">
+              <div class="adr-top">
+                <span class="adr-num">ADR-4</span
+                ><span class="adr-title"
+                  >CLAUDE.md as a living Architecture Decision Record</span
+                >
+              </div>
+              <div class="adr-body">
+                Every breaking change documented in
+                <code>spring-music/CLAUDE.md</code> with before/after and
+                rationale. Any future Claude session — or any new developer —
+                has full architectural memory without reading git history. The
+                tool becomes institutional memory.
+              </div>
+              <div class="adr-rej">
+                Rejected: inline code comments only — scattered, no single
+                source of truth, not readable by future Claude sessions.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hier">
+          <div class="hier-hd">
+            CLAUDE.md Hierarchy — 3 Levels, Scoped Context, Zero Duplication
+          </div>
+          <div class="hier-row">
+            <span class="h-lvl h1">Level 1</span>
+            <div>
+              <div class="h-path">hackathon/CLAUDE.md</div>
+              <div class="h-desc">
+                Workspace context — describes both sub-projects, shared
+                commands, submission deadline. Loaded when working at the
+                workspace root.
+              </div>
+            </div>
+          </div>
+          <div class="hier-row">
+            <span class="h-lvl h2">Level 2</span>
+            <div>
+              <div class="h-path">hackathon/spring-music/CLAUDE.md</div>
+              <div class="h-desc">
+                Project context — all 4 ADRs with rationale and rejected
+                alternatives, code conventions (logger format, HTTP annotations,
+                test isolation), full file map and profile reference. Loaded
+                when working on the app.
+              </div>
+            </div>
+          </div>
+          <div class="hier-row">
+            <span class="h-lvl h3">Level 3</span>
+            <div>
+              <div class="h-path">submissions/team17_.../CLAUDE.md</div>
+              <div class="h-desc">
+                Submission context — judging alignment table, scope summary,
+                pointers to other files, how conventions were taught to Claude.
+                Loaded when reviewing the submission. Zero duplication of Level
+                1 or 2 content.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="div" />
+
+      <!-- ══════════════════════════════════════════
+       SLIDE 5 — TESTING  [3:30 – 4:15]
+  ══════════════════════════════════════════════ -->
+      <section id="testing">
+        <div class="section-label">
+          <span class="min-badge">Min 4</span> Testing
+        </div>
+        <h2 class="section-h">
+          Adversarial thinking. <span>Edge cases. Evals.</span>
+        </h2>
+        <p class="section-sub">
+          We replaced the single empty stub with 6 adversarial MockMvc
+          integration tests using a real Spring context. Each test resets state
+          with <code>@BeforeEach</code> — isolation guaranteed.
+        </p>
+
+        <div class="g2">
+          <div class="card card-green">
+            <div class="card-hd green">
+              6 Integration Tests — AlbumControllerTest (MockMvc)
+            </div>
+            <div class="test-item">
+              <div class="ti-icon ti-pass">✓</div>
+              <div>
+                <div class="ti-name">
+                  GET /albums — empty repository returns []
+                </div>
+                <div class="ti-desc">
+                  Verifies endpoint returns an empty array (not null, not 500)
+                  when no albums exist. Baseline state assertion.
+                </div>
+              </div>
+            </div>
+            <div class="test-item">
+              <div class="ti-icon ti-pass">✓</div>
+              <div>
+                <div class="ti-name">
+                  PUT /albums — persists and returns auto-generated ID
+                </div>
+                <div class="ti-desc">
+                  New album is saved. Response contains a non-null id. Title and
+                  artist round-trip correctly.
+                </div>
+              </div>
+            </div>
+            <div class="test-item">
+              <div class="ti-icon ti-pass">✓</div>
+              <div>
+                <div class="ti-name">
+                  GET /albums/{id} — found path returns correct fields
+                </div>
+                <div class="ti-desc">
+                  Known album retrieved by ID. All field values match what was
+                  saved. No data loss in serialization.
+                </div>
+              </div>
+            </div>
+            <div class="test-item">
+              <div class="ti-icon ti-warn">!</div>
+              <div>
+                <div class="ti-name">
+                  GET /albums/{id} — unknown ID &nbsp;<span
+                    class="tag t-a"
+                    style="font-size: 0.65rem; padding: 1px 6px"
+                    >Design Gap Found</span
+                  >
+                </div>
+                <div class="ti-desc">
+                  Returns HTTP 200 + empty body instead of 404. Client cannot
+                  distinguish "not found" from "found but empty". Real API
+                  contract defect — now documented and flagged as next action.
+                </div>
+              </div>
+            </div>
+            <div class="test-item">
+              <div class="ti-icon ti-pass">✓</div>
+              <div>
+                <div class="ti-name">
+                  POST /albums — title mutation verified
+                </div>
+                <div class="ti-desc">
+                  Existing album title changed via POST. Response reflects the
+                  mutation. Field update verified end-to-end.
+                </div>
+              </div>
+            </div>
+            <div class="test-item">
+              <div class="ti-icon ti-pass">✓</div>
+              <div>
+                <div class="ti-name">
+                  DELETE /albums/{id} — confirmed removal via follow-up GET
+                </div>
+                <div class="ti-desc">
+                  Album deleted. Follow-up GET confirms it is gone. Full CRUD
+                  lifecycle: create → read → update → delete verified.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 1.2rem">
+            <div class="card card-amber">
+              <div class="card-hd amber">
+                The Design Gap — Found by Adversarial Testing
+              </div>
+              <p
+                style="
+                  font-size: 0.84rem;
+                  color: var(--text2);
+                  margin-bottom: 0.6rem;
+                  line-height: 1.55;
+                "
+              >
+                The not-found path test revealed that
+                <code>getById</code> returns
+                <strong>HTTP 200 + empty body</strong> instead of
+                <code>HTTP 404</code>. A client has no way to distinguish "not
+                found" from "found but empty."
+              </p>
+              <p
+                style="
+                  font-size: 0.84rem;
+                  color: var(--text2);
+                  margin-bottom: 0.6rem;
+                  line-height: 1.55;
+                "
+              >
+                This defect was invisible for the entire lifetime of the app —
+                because there was no test for the not-found path.
+              </p>
+              <p
+                style="
+                  font-size: 0.84rem;
+                  color: var(--text2);
+                  line-height: 1.55;
+                "
+              >
+                <strong style="color: var(--amber)">Fix:</strong> add
+                <code>@ResponseStatus(HttpStatus.NOT_FOUND)</code>. The test
+                already documents the expected behaviour. This is item #1 in
+                "What's Next."
+              </p>
+            </div>
+            <div class="card card-teal">
+              <div class="card-hd teal">
+                Testing Conventions Encoded in CLAUDE.md
+              </div>
+              <ul>
+                <li
+                  style="
+                    font-size: 0.8rem;
+                    color: var(--text2);
+                    padding: 0.2rem 0;
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 0.4rem;
+                  "
+                >
+                  <span
+                    style="
+                      color: var(--green);
+                      font-weight: 700;
+                      flex-shrink: 0;
+                    "
+                    >✓</span
+                  ><code>@BeforeEach</code> calls
+                  <code>repository.deleteAll()</code> — clean state for every
+                  test
+                </li>
+                <li
+                  style="
+                    font-size: 0.8rem;
+                    color: var(--text2);
+                    padding: 0.2rem 0;
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 0.4rem;
+                  "
+                >
+                  <span
+                    style="
+                      color: var(--green);
+                      font-weight: 700;
+                      flex-shrink: 0;
+                    "
+                    >✓</span
+                  >Use real Spring context (<code>@SpringBootTest</code>), not
+                  mocks
+                </li>
+                <li
+                  style="
+                    font-size: 0.8rem;
+                    color: var(--text2);
+                    padding: 0.2rem 0;
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 0.4rem;
+                  "
+                >
+                  <span
+                    style="
+                      color: var(--green);
+                      font-weight: 700;
+                      flex-shrink: 0;
+                    "
+                    >✓</span
+                  >Always test both found <em>and</em> not-found paths for every
+                  <code>getById</code>
+                </li>
+                <li
+                  style="
+                    font-size: 0.8rem;
+                    color: var(--text2);
+                    padding: 0.2rem 0;
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 0.4rem;
+                  "
+                >
+                  <span
+                    style="
+                      color: var(--green);
+                      font-weight: 700;
+                      flex-shrink: 0;
+                    "
+                    >✓</span
+                  >Count assertions (<code>hasSize(N)</code>) after multi-insert
+                  to verify no state bleed
+                </li>
+                <li
+                  style="
+                    font-size: 0.8rem;
+                    color: var(--text2);
+                    padding: 0.2rem 0;
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 0.4rem;
+                  "
+                >
+                  <span
+                    style="
+                      color: var(--green);
+                      font-weight: 700;
+                      flex-shrink: 0;
+                    "
+                    >✓</span
+                  >Ask for edge cases first — happy paths are the floor, not the
+                  ceiling
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="div" />
+
+      <!-- ══════════════════════════════════════════
+       SLIDE 6 — HOW WE USED CLAUDE CODE  [4:15 – 5:00]
+  ══════════════════════════════════════════════ -->
+      <section id="claude">
+        <div class="section-label">
+          <span class="min-badge">Min 5</span> How We Used Claude Code
+        </div>
+        <h2 class="section-h">
+          Subagents, skills, <span>something we didn't expect.</span>
+        </h2>
+        <p class="section-sub">
+          The most inventive use wasn't the code generation. It was teaching
+          Claude to work the right way — and having that knowledge survive
+          beyond the session.
+        </p>
+
+        <div class="g3">
+          <div class="cu">
+            <div class="cu-title">Codebase Archaeology First</div>
+            <div class="cu-body">
+              Before a single file was changed, Claude scanned every source file
+              and enumerated all legacy patterns simultaneously. All 12 issues
+              identified in one pass — no sequential discovery, no missed files,
+              no surprises mid-migration.
+            </div>
+            <div class="cu-out">
+              → Complete issue inventory before any change
+            </div>
+          </div>
+          <div class="cu">
+            <div class="cu-title">Adversarial Test Directive</div>
+            <div class="cu-body">
+              We explicitly instructed Claude:
+              <em>"generate edge-case tests, not just happy paths."</em> The
+              not-found path test was generated as a direct result — and it
+              found a real design gap that lived undetected in the codebase.
+            </div>
+            <div class="cu-out">
+              → Tests found a bug the original code never caught
+            </div>
+          </div>
+          <div class="cu">
+            <div class="cu-title">CLAUDE.md as Convention Enforcer</div>
+            <div class="cu-body">
+              Logger format, HTTP annotation style, test isolation pattern — all
+              encoded as CLAUDE.md conventions. These govern every future Claude
+              session in this project automatically. Decisions made once,
+              applied forever.
+            </div>
+            <div class="cu-out">
+              → Decisions persist beyond the conversation
+            </div>
+          </div>
+          <div class="cu">
+            <div class="cu-title">3-Level Context Hierarchy</div>
+            <div class="cu-body">
+              Workspace → project → submission, each CLAUDE.md scoped to where
+              you're working. Claude only loads what's relevant. No context
+              bloat, no duplicated information, no confusion about which layer
+              you're in.
+            </div>
+            <div class="cu-out">
+              → Right context, right depth, every session
+            </div>
+          </div>
+          <div class="cu">
+            <div class="cu-title">TodoWrite for Traceability</div>
+            <div class="cu-body">
+              Full 11-step task list maintained in real time. Each task marked
+              in-progress before starting, completed immediately after
+              finishing. Full audit trail — reproducible, ordered execution, not
+              ad-hoc.
+            </div>
+            <div class="cu-out">
+              → Full traceability of what was done and when
+            </div>
+          </div>
+          <div class="cu">
+            <div class="cu-title">ADR Protocol in CLAUDE.md</div>
+            <div class="cu-body">
+              Every architectural decision encoded with: <em>what</em>,
+              <em>why</em>, and <em>what was considered and rejected</em>. The
+              format Claude reasons about best — and it makes decisions durable,
+              inspectable, and reviewable by the next session.
+            </div>
+            <div class="cu-out">
+              → Architecture thinking survives the session
+            </div>
+          </div>
+        </div>
+
+        <div class="quote">
+          "If Claude only sees these three files, it should still understand
+          what you built. Don't leave them to the last ten minutes." — We took
+          this literally. The CLAUDE.md hierarchy means a fresh Claude session
+          can reconstruct the entire modernization story — what was wrong, what
+          was decided, what was built, what's next — without reading git
+          history.
+        </div>
+      </section>
+
+      <hr class="div" />
+
+      <!-- ══════════════════════════════════════════
+       SLIDE 7 — OUTCOME  [Summary]
+  ══════════════════════════════════════════════ -->
+      <section id="outcome">
+        <div class="section-label">Outcome &amp; What's Next</div>
+        <h2 class="section-h">
+          Could you hand this to <span>ops on Monday?</span>
+        </h2>
+        <p class="section-sub" style="margin-bottom: 1.5rem">
+          Yes. Every breaking issue resolved. App builds on Java 17. Six
+          integration tests verify runtime behaviour. CLAUDE.md documents every
+          decision for the next engineer — human or AI.
+        </p>
+
+        <div class="judging">
+          <div class="j-cell">
+            <div class="j-title">Most Production-Ready</div>
+            <div class="j-body">
+              All 12 breaking issues resolved. Builds on Java 17 LTS. No
+              dependency on shut-down infrastructure. 6 tests verify runtime
+              behaviour.
+            </div>
+          </div>
+          <div class="j-cell">
+            <div class="j-title">Best Architecture Thinking</div>
+            <div class="j-body">
+              4 ADRs with rationale + rejected alternatives. 3-level CLAUDE.md
+              hierarchy. Decisions encoded for durability — they age well.
+            </div>
+          </div>
+          <div class="j-cell">
+            <div class="j-title">Best Testing</div>
+            <div class="j-body">
+              Adversarial approach found a real API contract defect invisible
+              for the app's lifetime. @BeforeEach isolation. Edge cases first.
+            </div>
+          </div>
+          <div class="j-cell">
+            <div class="j-title">Best Product Work</div>
+            <div class="j-body">
+              README tells a story: problem first, solution by layer, what was
+              discovered, what's next. Persuades, not just informs.
+            </div>
+          </div>
+          <div class="j-cell">
+            <div class="j-title">Most Inventive Claude Code Use</div>
+            <div class="j-body">
+              CLAUDE.md as living ADR + convention enforcer. 3-level hierarchy.
+              Adversarial test directive. TodoWrite audit trail.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 1.2rem">
+          <div class="card-hd orange">What's Next — From README</div>
+          <div class="tags">
+            <span class="tag t-o"
+              >@ResponseStatus(NOT_FOUND) on getById — test already exposes
+              this</span
+            >
+            <span class="tag t-b"
+              >Replace AngularJS 1.x → Vue 3 (last legacy layer)</span
+            >
+            <span class="tag t-g"
+              >docker-compose.yml — one command for all DB profiles</span
+            >
+            <span class="tag t-p"
+              >GitHub Actions CI pipeline using Gradle 8.5</span
+            >
+            <span class="tag t-t">OpenAPI / Swagger docs on /api-docs</span>
+          </div>
+        </div>
+
+        <div class="card card-blue">
+          <div class="card-hd blue">Running It — From README</div>
+          <div class="codeblock">
+            <span class="comment"># Navigate to project</span>
+            <span class="cmd">cd hackathon/spring-music</span>
+
+            <span class="comment"># Build with Gradle 8.5</span>
+            <span class="cmd">./gradlew clean assemble</span>
+
+            <span class="comment"
+              ># Run on H2 in-memory (no external dependencies)</span
+            >
+            <span class="cmd">java -jar</span> build/libs/spring-music-1.0.jar
+            <span class="comment"># UI: </span
+            ><span class="url">http://localhost:8080</span>
+            <span class="comment"># API: </span
+            ><span class="url">http://localhost:8080/albums</span>
+
+            <span class="comment"># Run with MySQL profile</span>
+            <span class="cmd">java -jar</span>
+            <span class="flag">-Dspring.profiles.active=mysql</span>
+            build/libs/spring-music-1.0.jar
+
+            <span class="comment"># Tests — 7 tests, 0 failures</span>
+            <span class="cmd">./gradlew test</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        <div>
+          <strong>Team 17</strong> &nbsp;·&nbsp; Charan Raghupatruni · Mongkhon
+          Sinsirimongkhon · Thanakrit Junhom · Boom Mongkolsri · Sutinun
+          Imjongjairak
+        </div>
+        <div>
+          APAC Claude Code Workshop · 2026 &nbsp;·&nbsp; Built with Claude Code
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
