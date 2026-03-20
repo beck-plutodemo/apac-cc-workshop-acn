@@ -1,0 +1,138 @@
+# CLAUDE.md — migraft
+
+COBOL modernization tool for CobolCraft — a Minecraft 1.21.4 server written in ~268 files of
+GnuCOBOL (~15,000 lines). Migrating to a Node.js service mesh using the strangler fig pattern.
+Each extraction is independently deployable and independently reversible.
+
+## Stack
+
+- **Frontend**: React 18 + Vite + Tailwind CSS (dev: 5173, prod: 3000)
+- **Backend**: Express 4 + better-sqlite3 (dev: 3001, prod: 3000)
+- **AI**: `@anthropic-ai/sdk` — `claude-sonnet-4-6` for conversion and test generation
+- **Container**: Podman rootless, multi-stage `Containerfile` (node:22-alpine)
+
+## Extraction Order (lowest risk first)
+
+1. `src/encoding/*` — zero coupling, pure functions. First and safest extraction.
+2. `src/server-properties.cob` + `src/whitelist.cob` — isolated, UAT US-01–US-08.
+3. `src/players/*` — needs ACL first. UAT US-09–US-16. Circular dep via DD-CLIENTS.
+4. `src/world/*` — hardest. `chunk-io.cob` is 1019L, circular entities ↔ world. Parallel run required.
+5. `src/server.cob` — God class (933L, 100+ CALL statements). Never touch directly — strangle only.
+
+## Skills
+
+### /pin
+**Phase 0 — Characterise** | Challenge 4: The Pin
+
+Before converting any file, characterise its current behaviour.
+Run the COBOL binary, capture outputs, write golden-master tests.
+These tests MUST pass before AND after every extraction.
+Use `characterization` in test names so they are distinguishable from UAT tests.
+
+### /acl <module-name>
+**Phase 1–3** | Challenge 6: The Fence
+
+Scaffold an anti-corruption layer for a module extraction.
+Generates a TypeScript DTO interface + mapper from COBOL struct fields to idiomatic names.
+Rule: DD-* field names MUST NOT appear past the ACL boundary in any direction.
+Example: `DD-PLAYERS.PLAYER-HEALTH` → `PlayerDTO.health`
+
+### /contract
+**All phases** | Challenge 7: The Contract
+
+Run contract tests between the COBOL monolith and the modernised service.
+Encode a test payload with old COBOL, decode with new service — byte-perfect match required.
+A contract failure is a blocking gate. Do not merge until green.
+
+### /ci-check
+**Phase 1+** | Challenge 8: The Pipeline
+
+Run the full CI gate locally before pushing:
+  1. `npm run build:all`
+  2. Jest suite — all UAT AC IDs must appear in test names (e.g. `test_AC_02_1_...`)
+  3. Contract tests — byte-perfect encoding check
+  4. `podman build` — must exit 0
+
+### /status
+**All phases** | Progress tracking
+
+Show migration progress: which files have been converted, which modules are complete.
+Queries `GET /api/conversions` and maps filenames against the 7 MODULES.
+
+### /cutover
+**Phase 5 — Cutover** | Challenge 10: The Weekend
+
+Pre-cutover checklist before routing production traffic:
+  - All UAT acceptance criteria passing
+  - Packet trace diff = 0 bytes for all packet types
+  - Load test at 2× expected player count passed
+  - Rollback procedure documented and rehearsed in staging
+  - COBOL container running as warm standby (keep for 48h post-cutover)
+
+**Rollback triggers — never fix forward at 3am:**
+  - Any UAT AC regression on production traffic
+  - Packet trace diff > 0 bytes for any packet type
+  - Player data loss (inventory/position not restored on reconnect)
+  - Latency p99 > 2× COBOL baseline for > 5 minutes
+  - World corruption on any chunk read
+
+## Hooks
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [{ "type": "command", "command": "npm run contract-test 2>/dev/null || echo '[hook] contract tests skipped — no test runner found'" }]
+      }
+    ],
+    "PreCommit": [
+      {
+        "hooks": [{ "type": "command", "command": "node --input-type=module <<'EOF'\nimport { execSync } from 'child_process';\ntry { execSync('npm run build:all', { stdio: 'inherit' }); } catch { process.exit(1); }\nEOF" }]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [{ "type": "command", "command": "echo '\\n[migraft] Remember to update UAT pass/fail status in the UAT Stories tab before ending the session.'" }]
+      }
+    ]
+  }
+}
+```
+
+## CI/CD Conventions
+
+- One GitHub Actions workflow per service: `.github/workflows/<service>.yml`
+- Monolith and each extracted service deploy **independently** — a failing service must NOT block others.
+- Contract tests run on every PR that touches `server/` or `src/encoding/`.
+- Test names must embed the AC ID: `test_AC_02_1_no_duplicate_player_added`
+- Build matrix: lint → unit tests → contract tests → `podman build` → push (main only)
+
+## Infra Conventions
+
+| Layer | Choice | Rationale |
+|---|---|---|
+| Container runtime | Podman rootless | Already in use. Non-root user + health check required on all services. |
+| Orchestration | compose.yaml → Kubernetes | Local dev with compose. Graduate to K8s when > 3 services. |
+| Service mesh | HTTP (Phases 1–3) → NATS | Event bus needed for dual-write in world service. NATS is lightweight. |
+| Persistence | SQLite → PostgreSQL | SQLite for config/whitelist. Postgres for player and world state. |
+| Observability | Prometheus + Grafana | Instrument each service. Compare p99 latency against COBOL baseline. |
+
+## Key Files
+
+- `UAT.md` — 17 user stories, 50+ acceptance criteria, 13 quirks to pin. Read before converting anything.
+- `backend/converter.js` — Claude API: `convertCobol`, `generateTests`, `parseUat`
+- `backend/db.js` — SQLite schema: `conversions`, `tests`, `uat_results`
+- `frontend/src/components/ArchitectureView.jsx` — module breakdown + extraction risk
+- `frontend/src/components/InfraView.jsx` — migration phases + rollback triggers
+- `Containerfile` — multi-stage Podman build
+- `compose.yaml` — local stack with persistent SQLite volume at `/app/data`
+
+## Coding Conventions
+
+- No markdown code fences in Claude conversion output — return raw source only.
+- ACL files live in `src/acl/` — one per extracted service.
+- COBOL quirks Q-01 through Q-13 (see `UAT.md` Appendix A) must be explicitly handled or noted.
+- Commit format: `feat(<service>): description` or `fix(<service>): description`
+- Do not commit `.env` — use `.env.example` with placeholder values only.
