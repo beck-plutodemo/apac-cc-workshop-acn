@@ -25,19 +25,26 @@ Each scenario has 10 challenges. You won't finish all of them. That's by design.
 
 | \# | Scenario | One-liner |
 | :---- | :---- | :---- |
-| 1 | **Code Modernization** | A monolith nobody understands. The board wants it "modernized." |
-| 2 | **Cloud Migration** | On-prem to cloud. The CFO and CTO disagree on how. |
-| 3 | **Data Engineering** | Seven systems. Zero agreement on what a "customer" is. |
-| 4 | **Data Analytics** | 40 dashboards. One metric. Four different answers. |
-| 5 | **Agentic Solution** (Claude Agent SDK) | 200 requests a day, triaged by hand. Build the agent. |
+| 1 | **[Code Modernization](scenarios/01-code-modernization.md)**  | A monolith nobody understands. The board wants it "modernized." |
+| 2 | **[Cloud Migration](scenarios/02-cloud-migration.md)** | On-prem to cloud. The CFO and CTO disagree on how. |
+| 3 | **[Data Engineering](scenarios/03-data-engineering.md)** | Seven systems. Zero agreement on what a "customer" is. |
+| 4 | **[Data Analytics](scenarios/04-data-analytics.md)** | 40 dashboards. One metric. Four different answers. |
 
+<!--
+| 5 | **Agentic Solution** (Claude Agent SDK) | 200 requests a day, triaged by hand. Build the agent. |
+-->
 ---
 
 ## The Judging
 
 Claude does the judging. Top teams present live (5 minutes each).
 
-**What definitely gets read:** your `README.md`, your `presentation.html`, and your `CLAUDE.md`. These are your pitch. Don't leave them to the last ten minutes. If Claude only sees those three files, it should still understand what you built, why it matters, how far you got, and how you taught the tool to work your way. We may go deeper into the repo, we may not. Assume those three carry the weight.
+**What definitely gets read:** 
+1. Your `README.md`
+2. Your `presentation.html`
+3. Your `CLAUDE.md`. 
+
+These are your pitch. Don't leave them to the last ten minutes. If Claude only sees those three files, it should still understand what you built, why it matters, how far you got, and how you taught the tool to work your way. We may go deeper into the repo, we may not. Assume those three carry the weight.
 
 **What we're looking for** (final categories will be a surprise\!, but think along these lines):
 
@@ -52,15 +59,18 @@ Claude does the judging. Top teams present live (5 minutes each).
 
 ## Submission
 
-Before time's up, your repo needs:
+Before time's up, you need:
 
-1. **`README.md`** tells the story. Use the template below.  
-2. **`/decisions`** folder with ADRs and architecture notes.  
-3. **Any Working code**, however far you got.  
-4. **`CLAUDE.md`** so we can see how you taught it.  
-5. **`presentation.html`**, your 5-minute deck built with Claude Code. Ready to present if called.
+1. **`README.md`** tells the story. Use the template below.
+2. **`CLAUDE.md`** so we can see how you taught it.  
+3. **`presentation.html`**, your 5-minute deck built with Claude Code. Ready to present if called.
+4. **Any Working code**, however far you got.  
 
-Push to a branch named `team-<name>` and drop the link in the shared channel.
+If you are able to, please push to a branch named `team-<name>` and drop the link in the shared channel.
+
+To complete your submission, create a single zip archive of the 3 files and name that with your team name.  Then submit it using: [Google Form](https://forms.gle/S5YXLqev7CQ4crBg6).  Only one submission per team, you will need to use a personal google account to submit.
+
+**NO CLIENT OR INTERNAL DATA**
 
 ---
 
