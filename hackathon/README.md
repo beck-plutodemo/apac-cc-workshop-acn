@@ -29,10 +29,8 @@ Each scenario has 10 challenges. You won't finish all of them. That's by design.
 | 2 | **[Cloud Migration](scenarios/02-cloud-migration.md)** | On-prem to cloud. The CFO and CTO disagree on how. |
 | 3 | **[Data Engineering](scenarios/03-data-engineering.md)** | Seven systems. Zero agreement on what a "customer" is. |
 | 4 | **[Data Analytics](scenarios/04-data-analytics.md)** | 40 dashboards. One metric. Four different answers. |
+| 5 | **[Agentic Solution](scenarios/05-agentic-solution.md)** (Claude Agent SDK) | 200 requests a day, triaged by hand. Build the agent. |
 
-<!--
-| 5 | **Agentic Solution** (Claude Agent SDK) | 200 requests a day, triaged by hand. Build the agent. |
--->
 ---
 
 ## The Judging
